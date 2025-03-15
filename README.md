@@ -34,8 +34,6 @@ Det här projektet är en webbaserad portal för hantering av 3D-skrivare med fu
 - **Composer**  
   Används för att hantera PHP-bibliotek och beroenden som PHPMailer.
 
-
-## Last Update
 ## Senaste uppdateringarna
 - **Support-sida**: Nu finns en support-sida som visar status för problem och lösningar.
 - **Underhållsläge**: Administratörer kan nu planera och ta bort underhållsperioder via adminpanelen.
