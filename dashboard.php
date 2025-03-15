@@ -245,6 +245,12 @@ $fullName = str_replace('.', ' ', $_SESSION['username']);
                 <a href="?logout" class="button">Logga ut</a>
                 <a href="calendar.php" class="button">Boka 3D-skrivare</a>
                 <a href="view_bookings.php" class="button">Visa bokningar</a>
+                <?php if ($_SESSION['role'] === 'admin'): ?>
+                    <a href="view_support.php" class="button">Visa supportärenden</a>
+                    <a href="manage_maintenance.php" class="button">Hantera underhåll</a>
+                <?php else: ?>
+                    <a href="support.php" class="button">Rapportera fel</a>
+                <?php endif; ?>
             </div>
             <div class="weather">
                 <h2>Väder i <?= htmlspecialchars($city) ?></h2>
@@ -253,7 +259,7 @@ $fullName = str_replace('.', ' ', $_SESSION['username']);
             </div>
         </div>
         <div class="content">
-            <h1>3D-skrivare - Utskriftsstatus</h1>
+            <h1>3D-skrivare - 3D-skrivarportalen</h1>
             <?php if (isset($error)): ?>
                 <p class="error"><?= htmlspecialchars($error) ?></p>
             <?php endif; ?>

@@ -28,6 +28,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $hours = $_POST['hours'];
     $user = $_SESSION['username'];
 
+    // Kontrollera om skrivaren är otillgänglig
+    $stmt = $conn->prepare("SELECT * FROM printers WHERE name = ? AND available = 0");
+    $stmt->bind_param("s", $printer);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        echo "<script>alert('Denna skrivare är för närvarande otillgänglig.'); window.location.href='dashboard.php';</script>";
+        exit;
+    }
+    $stmt->close();
+
+    // Kontrollera om skrivaren är under underhåll
+    $stmt = $conn->prepare("SELECT * FROM maintenance WHERE printer = ? AND ? BETWEEN start_date AND end_date");
+    $stmt->bind_param("ss", $printer, $date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        echo "<script>alert('Denna skrivare är under underhåll under den valda perioden.'); window.location.href='dashboard.php';</script>";
+        exit;
+    }
+    $stmt->close();
+
     // Kontrollera om tiden redan är bokad
     $stmt = $conn->prepare("SELECT * FROM bookings WHERE printer = ? AND date = ?");
     $stmt->bind_param("ss", $printer, $date);
@@ -92,6 +114,27 @@ function isBooked($printer, $date, $time, $bookings) {
     }
     return false;
 }
+
+function isUnderMaintenance($printer, $date, $time, $conn) {
+    $stmt = $conn->prepare("SELECT * FROM maintenance WHERE printer = ? AND ? BETWEEN start_date AND end_date");
+    $stmt->bind_param("ss", $printer, $date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $isUnderMaintenance = false;
+    while ($row = $result->fetch_assoc()) {
+        $startTime = strtotime($row['start_date']);
+        $endTime = strtotime($row['end_date'] . ' 23:59:59');
+        $newStartTime = strtotime($date . ' ' . $time);
+        $newEndTime = strtotime("+1 hour", $newStartTime);
+
+        if (($newStartTime < $endTime) && ($newEndTime > $startTime)) {
+            $isUnderMaintenance = true;
+            break;
+        }
+    }
+    $stmt->close();
+    return $isUnderMaintenance;
+}
 ?>
 <!DOCTYPE html>
 <html lang="sv">
@@ -108,6 +151,7 @@ function isBooked($printer, $date, $time, $bookings) {
         th { background-color: #444; }
         .booked { background-color: #ff4444; color: #fff; }
         .available { background-color: #44ff44; color: #000; }
+        .maintenance { background-color: #ffa500; color: #000; }
         button { background-color: #ffcc00; border-radius: 5px; cursor: pointer; }
         button:hover { background-color: #ffaa00; }
         .footer {
@@ -196,12 +240,17 @@ function isBooked($printer, $date, $time, $bookings) {
         <?php for ($hour = 8; $hour < 16; $hour++): ?>
             <tr>
                 <td><?= sprintf('%02d:00', $hour) ?></td>
-                <td class="<?= isBooked($selectedPrinter, $selectedDay, sprintf('%02d:00', $hour), $bookings) ? 'booked' : 'available' ?>">
-                    <?= isBooked($selectedPrinter, $selectedDay, sprintf('%02d:00', $hour), $bookings) ? 'Bokad' : 'Tillgänglig' ?>
+                <?php
+                    $time = sprintf('%02d:00', $hour);
+                    $isBooked = isBooked($selectedPrinter, $selectedDay, $time, $bookings);
+                    $isUnderMaintenance = isUnderMaintenance($selectedPrinter, $selectedDay, $time, $conn);
+                ?>
+                <td class="<?= $isBooked ? 'booked' : ($isUnderMaintenance ? 'maintenance' : 'available') ?>">
+                    <?= $isBooked ? 'Bokad' : ($isUnderMaintenance ? 'Underhållsarbete pågår' : 'Tillgänglig') ?>
                 </td>
                 <td>
-                    <?php if (!isBooked($selectedPrinter, $selectedDay, sprintf('%02d:00', $hour), $bookings)): ?>
-                        <button onclick="confirmBooking('<?= $selectedPrinter ?>', '<?= $selectedDay ?>', '<?= sprintf('%02d:00', $hour) ?>')">Boka</button>
+                    <?php if (!$isBooked && !$isUnderMaintenance): ?>
+                        <button onclick="confirmBooking('<?= $selectedPrinter ?>', '<?= $selectedDay ?>', '<?= $time ?>')">Boka</button>
                     <?php endif; ?>
                 </td>
             </tr>

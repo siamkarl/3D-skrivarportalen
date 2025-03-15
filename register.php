@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'], $_POST['e
     if (strpos($email, '@elev.ga.ntig.se') !== false) {
         // Extract username from email
         $username = explode('@', $email)[0];
+        $role = 'user'; // Assign role 'user' by default
 
         // Check if user already exists
         $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
@@ -38,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'], $_POST['e
             $token = bin2hex(random_bytes(16));
 
             // Register new user with verification token
-            $stmt = $conn->prepare("INSERT INTO users (username, password, email, token, verified) VALUES (?, ?, ?, ?, 0)");
-            $stmt->bind_param("ssss", $username, $password, $email, $token);
+            $stmt = $conn->prepare("INSERT INTO users (username, password, email, token, verified, role) VALUES (?, ?, ?, ?, 0, ?)");
+            $stmt->bind_param("sssss", $username, $password, $email, $token, $role);
             $stmt->execute();
 
             // Send verification email
