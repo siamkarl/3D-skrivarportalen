@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "Vas",
+        "progress": 51
+    },
+    {
+        "id": 2,
+        "name": "Figur",
+        "progress": 75
+    },
+    {
+        "id": 3,
+        "name": "Nyckelring",
+        "progress": 20
+    }
+]
