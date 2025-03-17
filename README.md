@@ -51,9 +51,23 @@ Det här projektet är en webbaserad portal för hantering av 3D-skrivare med fu
 
 ## Att fixa
 
-- **Återställning av lösenord** behöver förbättras.
-- **Verifiering av användare** saknas eller behöver åtgärdas.
+- **Återställning** av lösenord behöver förbättras.
+- **Verifiering** av användare saknas eller behöver åtgärdas.
 - **Back-knappar** saknas på vissa sidor och behöver läggas till.
+
+## Installation av Database
+
+- **Importera** admin_skola.sql
+- **Ändra database inställningar i filerna** (finns flera filer)
+- **Inloggning admin** användare: admin, password: 1234
+- **Inloggning user** användare: user, password: 1234
+
+## Teknologier
+
+- **PHP (version 8.4)** - Backend-kod för autentisering, databashantering och serverlogik.
+- **MySQL eller MariaDB** - Databas för lagring av användardata, bokningar och systeminställningar.
+- **PHPMailer** - Används för att skicka e-post (kontoåterställning och verifiering).
+- **Composer** - Hanterar PHP-bibliotek och beroenden.
 
 ## Smtp server redo att användas för utbildningssyfte
 - **mail server:** mail.ntiare.se
