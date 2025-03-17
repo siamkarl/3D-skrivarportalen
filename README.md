@@ -1,12 +1,12 @@
 # 3D Skrivare Portal
 
-Det här projektet är en webbaserad portal för hantering av 3D-skrivare med funktioner som inloggning, bokning av skrivare, rapportering av problem och återställning av lösenord via e-post. Systemet är byggt med PHP (version 8.4) och Node.js för att förbättra funktionalitet och användarupplevelse.
+Det här projektet är en webbaserad portal för hantering av 3D-skrivare med funktioner som inloggning, bokning av skrivare, rapportering av problem och återställning av lösenord via e-post. Systemet är byggt med PHP (version 8.4) och Mariadb/Mysql för att förbättra funktionalitet samt säkerheten.
 
 ## Funktioner
 
 - **Login-system för elever och personal**
-  - Elever loggar in via `elev.ga.ntig.se`.
-  - Personal loggar in via `ga.ntig.se`.
+  - Elever loggar in via `@elev.ga.ntig.se`.
+  - Personal loggar in via `@ga.ntig.se`.
   - Endast behöriga användare kan logga in via specifika e-postdomäner.
 
 - **Bokningssystem för 3D-skrivare**
@@ -54,6 +54,8 @@ Det här projektet är en webbaserad portal för hantering av 3D-skrivare med fu
 - **Återställning** av lösenord behöver förbättras.
 - **Verifiering** av användare saknas eller behöver åtgärdas.
 - **Back-knappar** saknas på vissa sidor och behöver läggas till.
+- **Tillåt inloggningar** som @elev.ntig.se samt @ntig.se.
+ 
 
 ## Installation av Database
 
