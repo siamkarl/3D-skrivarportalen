@@ -53,8 +53,8 @@ Det här projektet är en webbaserad portal för hantering av 3D-skrivare med fu
 
 1. Klona detta repository:
    ```sh
-   git clone https://github.com/ditt-användarnamn/3d-skrivare-portal.git
-   cd 3d-skrivare-portal
+   git clone https://github.com/siamkarl//3D-skrivarportalen.git
+   cd /3D-skrivarportalen
    ```
 
 2. Installera PHP-beroenden:
