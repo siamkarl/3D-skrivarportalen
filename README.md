@@ -45,39 +45,22 @@ Det här projektet är en webbaserad portal för hantering av 3D-skrivare med fu
 ## Teknologier
 
 - **PHP (version 8.4)** - Backend-kod för autentisering, databashantering och serverlogik.
-- **Node.js** - För asynkrona funktioner och uppdateringar i realtid.
+- **MySQL eller MariaDB** - Databas för lagring av användardata, bokningar och systeminställningar.
 - **PHPMailer** - Används för att skicka e-post (kontoåterställning och verifiering).
 - **Composer** - Hanterar PHP-bibliotek och beroenden.
 
-## Installation
+## Att fixa
 
-1. Klona detta repository:
-   ```sh
-   git clone https://github.com/siamkarl//3D-skrivarportalen.git
-   cd /3D-skrivarportalen
-   ```
+- **Återställning av lösenord** behöver förbättras.
+- **Verifiering av användare** saknas eller behöver åtgärdas.
+- **Back-knappar** saknas på vissa sidor och behöver läggas till.
 
-2. Installera PHP-beroenden:
-   ```sh
-   composer install
-   ```
+## Smtp server redo att användas för utbildningssyfte
+- **mail server:** mail.ntiare.se
+- **port:** 587
+- **username:** sender@ntiare.se
+- **password:** P7DRQntPHv9c6vP2V5Ky
 
-3. Installera Node.js-beroenden:
-   ```sh
-   npm install
-   ```
-
-4. Konfigurera `.env`-filen med dina inställningar (databas, e-postserver osv.).
-
-5. Starta servern:
-   ```sh
-   php -S localhost:8000 -t public/
-   ```
-
-6. Starta eventuella Node.js-processer:
-   ```sh
-   node server.js
-   ```
 
 ## Bidrag
 
