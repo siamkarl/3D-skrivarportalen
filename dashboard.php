@@ -125,8 +125,16 @@ $fullName = str_replace('.', ' ', $_SESSION['username']);
             background-color: var(--form-background-color);
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
             margin-right: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+        .sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: var(--text-color);
         }
         .content {
             width: 75%;
@@ -172,7 +180,7 @@ $fullName = str_replace('.', ' ', $_SESSION['username']);
         .buttons {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
             gap: 10px;
             margin-bottom: 20px;
         }
@@ -184,18 +192,25 @@ $fullName = str_replace('.', ' ', $_SESSION['username']);
             border-radius: 5px;
             text-decoration: none;
             font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s ease;
         }
         .button:hover {
             background-color: #45a049;
         }
         .weather {
             text-align: center;
+            margin-top: 20px;
         }
         .weather h2 {
             margin: 0;
+            font-size: 20px;
+            color: var(--text-color);
         }
         .weather p {
             margin: 5px 0;
+            font-size: 16px;
+            color: var(--text-color);
         }
         .theme-toggle {
             position: absolute;
@@ -241,9 +256,18 @@ $fullName = str_replace('.', ' ', $_SESSION['username']);
     <div class="container">
         <div class="sidebar">
             <h2>Välkommen, <?= htmlspecialchars(ucwords($fullName)) ?></h2>
+            <div class="weather">
+                <h2>Väder i <?= htmlspecialchars($city) ?></h2>
+                <p>Temperatur: <?= htmlspecialchars($weatherData['main']['temp']) ?>°C</p>
+                <p>Väder: <?= htmlspecialchars(translateWeather($weatherData['weather'][0]['description'])) ?></p>
+            </div>
             <div class="buttons">
-                <a href="?logout" class="button">Logga ut</a>
-                <a href="calendar.php" class="button">Boka 3D-skrivare</a>
+                <h3>Regler och Guides:</h3>
+                <a href="rules.php" class="button">Städregler</a>
+                <a href="guide.php" class="button">Guide</a>
+            </div>
+            <div class="buttons">
+                <h3>Ärenden och Bokningar:</h3>
                 <a href="view_bookings.php" class="button">Visa bokningar</a>
                 <?php if ($_SESSION['role'] === 'admin'): ?>
                     <a href="view_support.php" class="button">Visa supportärenden</a>
@@ -251,33 +275,19 @@ $fullName = str_replace('.', ' ', $_SESSION['username']);
                 <?php else: ?>
                     <a href="support.php" class="button">Rapportera fel</a>
                 <?php endif; ?>
+
             </div>
-            <div class="weather">
-                <h2>Väder i <?= htmlspecialchars($city) ?></h2>
-                <p>Temperatur: <?= htmlspecialchars($weatherData['main']['temp']) ?>°C</p>
-                <p>Väder: <?= htmlspecialchars(translateWeather($weatherData['weather'][0]['description'])) ?></p>
+            <div class="buttons">
+                <h3>Övrigt:</h3>
+                <a href="calendar.php" class="button">Boka 3D-skrivare</a>
+                <a href="status.php" class="button">Utskriftsstatus</a>
+            </div>
+            <div class="buttons">
+            <a href="?logout" class="button">Logga ut</a>
             </div>
         </div>
         <div class="content">
-            <h1>3D-skrivare - 3D-skrivarportalen</h1>
-            <?php if (isset($error)): ?>
-                <p class="error"><?= htmlspecialchars($error) ?></p>
-            <?php endif; ?>
-            <?php foreach ($printJobs as $job): ?>
-                <div class="job">
-                    <h3><?= htmlspecialchars($job['name']) ?></h3>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: <?= $job['progress'] ?>%">
-                            <?= $job['progress'] ?>%
-                        </div>
-                    </div>
-                    <form method="POST">
-                        <input type="hidden" name="id" value="<?= $job['id'] ?>">
-                        <input type="number" name="progress" min="0" max="100" value="<?= $job['progress'] ?>">
-                        <button type="submit">Uppdatera</button>
-                    </form>
-                </div>
-            <?php endforeach; ?>
+            <h1>3D-skrivarportalen</h1>
             <h1>Bokningar</h1>
             <?php if (empty($bookings)): ?>
                 <p>Inga aktuella bokningar.</p>
@@ -293,7 +303,7 @@ $fullName = str_replace('.', ' ', $_SESSION['username']);
         </div>
     </div>
     <div class="footer">
-        Hemsidan är gjort av Siam Karlsson | version: 1.0 | senaste uppdatering 2025-03-15 | &copy; 2025
+        Hemsidan är gjort av Siam Karlsson | version: 1.0 | senaste uppdatering 2025-03-16 | &copy; 2025
     </div>
 </body>
 </html>

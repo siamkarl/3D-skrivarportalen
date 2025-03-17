@@ -125,7 +125,7 @@ $stmt->close();
         </form>
     </div>
     <div class="support-requests">
-        <h1>Öppna ärenden</h1>
+        <h1>Öppnade ärenden</h1>
         <?php if (empty($supportRequests)): ?>
             <p>Inga rapporterade fel ännu.</p>
         <?php else: ?>
